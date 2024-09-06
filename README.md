@@ -1,74 +1,75 @@
-# secondCrudG2
+# SecondCrudG2
 
-## Installation 
+## Installation
 
-Installation de la dernière version stable avec les dépendances courantes pour un site web
+Installation de Symfony `LTS` (Long Term Support) en mode webapp (avec la plupart des dépendances pour un site web)
 
-    symfony new FirstCrudG2 --webapp
-    cd FirstCrudG2
+    symfony new SecondCrudG2 --version=lts --webapp
 
-### Mise à jour de composer
+On rentre dans le répertoire
+
+    cd SecondCrudG2
+
+On crée un repository sur `github` et on le lie au projet
+
+    git remote add origin git@github.com:WebDevCF2m2023/secondCrudG2.git
+    git branch -M main
+    git push -u origin main
+
+On crée le README.md sur github, on effectue un commit sur github, puis on le charge en local avec `git pull`
+
+### Mise à jour de la dernière version de composer
+
+    composer self-update
+
+### Mise à jour des bibliothèques
 
     composer update
 
-### Lancement du serveur
+### Démarrage du serveur
 
     symfony serve -d
 
-https://127.0.0.1:8000
+fermeture
 
-### Création d'un contrôleur
+    symfony server:stop
 
-    php bin/console make:controller HomeController
+### Création d'un `controller`
 
-2 fichiers sont créés, le contrôleur et sa vue :
+    php bin/console make:controller MyController
+        created: src/Controller/MyController.php
+        created: templates/my/index.html.twig
 
-    created: src/Controller/HomeController.php
-    created: templates/home/index.html.twig
-
-Pour voir le chemin généré pour le contrôleur
-
-    php bin/console debug:route
-
-Pour voir le détail du chemin généré pour le contrôleur
+### Voir les chemins de notre projet
 
     php bin/console debug:route
 
-Pour le fichier
+Pour le détail d'une route particulière
+
+    php bin/console debug:route app_my
+
+### Mise de `MyController` comme racine du projet
+
+Dans le fichier `src/Controller/MyController.php`
 
 ```php
-<?php
-#src/Controller/HomeController.php
-
-# ...
-    #[Route('/home', name: 'app_home')]
+    #[Route('/my', name: 'app_my')]
     public function index(): Response
-    {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+    return $this->render('my/index.html.twig', [
+            'controller_name' => 'MyController',
         ]);
-    }
-# ...
-```
-
-On souhaite avoir cette page comme accueil réel de notre site
-
-```php
-<?php
-#src/Controller/HomeController.php
-
-# ...
+    
+    ### en
+    
     #[Route('/', name: 'homepage')]
     public function index(): Response
-    {
-        return $this->render('home/index.html.twig', [
+    return $this->render('my/index.html.twig', [
             'titre' => 'homepage',
         ]);
-    }
-# ...
 ```
 
-Et le template
+### Changement de `templates/my/index.html.twig`
+
 
 ```twig
 {% extends 'base.html.twig' %}
@@ -76,85 +77,266 @@ Et le template
 {% block title %}{{ titre }}{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>{{ titre }}</h1>
-</div>
+    <div class="container">
+        <h1>{{ titre }}</h1>
+    </div>
 {% endblock %}
 
 ```
+    
+### Création d'un environnement sécurisé
 
-### Création d'une entité
-
-    php bin/console make:entity Article
-
-    created: src/Entity/Article.php
-    created: src/Repository/ArticleRepository.php
-
-Le premier fichier sera le "mapping - DTO" d'une donnée, le deuxième sera un Manager
-
-### Création du fichier de configuration
-
-On va copier le fichier `.env` en `.env.local` :
+Copie de `.env` vers `.env.local`
 
     cp .env .env.local
 
-Puis on va modifier la clef secrète
+Il faut changer la clé dans `.env.local`, et choisir une base de donnée (ici, on choisira `MySQL`)
 
-```env
-# .env.local
+```.env
+    # choix prod -> production, test -> test, dev -> développement
+APP_ENV=dev
+APP_SECRET=uneclefsecrète
 
-APP_SECRET=VotreVraiClefSecrete
-```
+    # changement des lignes ci-dessous
 
-#### Lien vers la database
+# DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.0.32&charset=utf8mb4"
+# DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
+DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
 
+    # Par
 
-Pour le moment la database activée est en PostgreSQL, on va la commenter avec #
-
-```env
-# .env.local
-
-###> doctrine/doctrine-bundle ###
-
-# DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
-DATABASE_URL="mysql://root:@127.0.0.1:3306/firstcrudg2?serverVersion=8.0.31&charset=utf8mb4"
+DATABASE_URL="mysql://root:@127.0.0.1:3306/secondcrudg2?serverVersion=8.0.31&charset=utf8mb4"
 # DATABASE_URL="mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
 # DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
 
-###< doctrine/doctrine-bundle ###
 ```
 
+### On va créer la database via `Doctrine`
 
-
-### Création de la database
+Symfony va chercher le chemin depuis `.env.local`
 
     php bin/console doctrine:database:create
-    # version raccourcie
-    php bin/console d:d:c
 
-### Migration vers MySQL
+
+### On va créer une entité
+
+    php bin/console make:entity Article
+
+        created: src/Entity/Article.php
+        created: src/Repository/ArticleRepository.php
+
+On va remplir les champs dans la console
+
+```bash
+New property name (press <return> to stop adding fields):
+ > title
+
+ Field type (enter ? to see all types) [string]:
+ > string
+string
+
+ Field length [255]:
+ > 160
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ updated: src/Entity/Article.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > description
+
+ Field type (enter ? to see all types) [string]:
+ > text
+text
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ updated: src/Entity/Article.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > dateCreated
+
+ Field type (enter ? to see all types) [string]:
+ > datetime
+datetime
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ updated: src/Entity/Article.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > published
+
+ Field type (enter ? to see all types) [string]:
+ > boolean
+boolean
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ updated: src/Entity/Article.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ >
+
+  Success!
+
+ Next: When you're ready, create a migration with php bin/console make:migration
+```
+
+On peut aller voir le fichier `src/Entity/Article.php`
+
+Nous allons effectuer des modifications dans celui-ci pour l'adapter à MySQL 8.*
+
+Documentation : https://www.doctrine-project.org/projects/doctrine-orm/en/3.2/reference/attributes-reference.html#attrref_column
+
+
+```php
+<?php
+
+// src/Entity/Article.php
+
+namespace App\Entity;
+
+use App\Repository\ArticleRepository;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: ArticleRepository::class)]
+class Article
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(
+        # on met l'id en unsigned
+        options:
+            [
+                'unsigned' => true,
+            ]
+    )]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 160)]
+    private ?string $title = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
+
+    #[ORM\Column(
+        type: Types::DATETIME_MUTABLE,
+        # on passe la valeur par défaut en CURRENT_TIMESTAMP
+        options: [
+            'default' => 'CURRENT_TIMESTAMP',
+        ]
+    )]
+    private ?\DateTimeInterface $dateCreated = null;
+
+    #[ORM\Column(
+        options:
+        # si aucun boolean n'est envoyé, la valeur par défaut est fausse
+            [
+                'default' => false,
+            ]
+    )]
+    private ?bool $published = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->dateCreated;
+    }
+
+    public function setDateCreated(?\DateTimeInterface $dateCreated): static
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    public function isPublished(): ?bool
+    {
+        return $this->published;
+    }
+
+    public function setPublished(?bool $published): static
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+}
+
+```
+
+## Migration
 
     php bin/console make:migration
+    
+    created: migrations/Version20240906093756.php
 
-puis
+Si ça a fonctionné, vérifiez le fichier dans le dossier `migrations`, la requête `SQL`devrait correspondre à vos attentes.
 
-    php bin/console doctrine:migrations:migrate
-    # OU
+Pour effectuer la migration :
+
     php bin/console d:m:m
+    php bin/console doctrine:migrations:migrate
 
-### Création du CRUD
+Attention cette étape pourrait effacer des données (en dev uniquement)
+
+## Création du CRUD de `Article`
 
     php bin/console make:crud Article
 
-Fichiers installés :
-```
-created: src/Controller/ArticleController.php
+```bash
+ Choose a name for your controller class (e.g. ArticleController) [ArticleController]:
+ > AdminArticleCrud
+
+ Do you want to generate PHPUnit tests? [Experimental] (yes/no) [no]:
+ > yes
+
+ created: src/Controller/AdminArticleCrudController.php
  created: src/Form/ArticleType.php
- created: templates/article/_delete_form.html.twig
- created: templates/article/_form.html.twig
- created: templates/article/edit.html.twig
- created: templates/article/index.html.twig
- created: templates/article/new.html.twig
- created: templates/article/show.html.twig
+ created: templates/admin_article_crud/_delete_form.html.twig
+ created: templates/admin_article_crud/_form.html.twig
+ created: templates/admin_article_crud/edit.html.twig
+ created: templates/admin_article_crud/index.html.twig
+ created: templates/admin_article_crud/new.html.twig
+ created: templates/admin_article_crud/show.html.twig
  created: tests/Controller/ArticleControllerTest.php
+
+  Success!
+
+ Next: Check your new CRUD by going to /admin/article/crud/
+
 ```
