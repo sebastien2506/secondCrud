@@ -34,6 +34,7 @@ class Article
     private ?\DateTimeInterface $dateCreated = null;
 
     #[ORM\Column(
+        nullable: true,
         options: [
             'default' => false,
         ],
