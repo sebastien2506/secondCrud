@@ -26,6 +26,7 @@ class Article
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE,
+    nullable: true,
     options:[
         'default' => 'CURRENT_TIMESTAMP',
             ]

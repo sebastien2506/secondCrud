@@ -1,3 +1,277 @@
 body {
-    background-color: skyblue;
+    background-color: red;
+}
+h1{
+    color: white;
+    font-family: "Rubik", sans-serif;
+    text-align: center;
+    margin-top: 100px;
+    font-size: 50px;
+    text-shadow: 12px 12px 12px rgba(255, 255, 255, 0.5);
+    letter-spacing: 5px;
+    animation: text-shadow-animation 1s ease-in-out infinite;
+    -webkit-animation: text-shadow-animation 1s ease-in-out infinite;
+    -moz-animation: text-shadow-animation 1s ease-in-out infinite;
+    -o-animation: text-shadow-animation 1s ease-in-out infinite;
+    -ms-animation: text-shadow-animation 1s ease-in-out infinite;
+    animation-delay: 0.5s;
+    -webkit-animation-delay: 0.5s;
+     -moz-animation-delay: 0.5s;
+      -o-animation-delay: 0.5s;
+       -ms-animation-delay: 0.5s;
+}
+
+th{
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+}
+html {
+height: 100%;
+}
+body {
+margin:0;
+padding:0;
+font-family: sans-serif;
+background: linear-gradient(#141e30, #243b55);
+}
+
+.login-box {
+position: absolute;
+top: 50%;
+left: 50%;
+width: 400px;
+padding: 40px;
+transform: translate(-50%, -50%);
+background: rgba(0,0,0,.5);
+box-sizing: border-box;
+box-shadow: 2px 12px 8px rgba(255, 255, 255, 0.5);
+border-radius: 10px;
+}
+
+.login-box h2 {
+margin: 0 0 30px;
+padding: 0;
+color: #fff;
+text-align: center;
+}
+
+.login-box .user-box {
+position: relative;
+}
+
+.login-box .user-box input {
+width: 100%;
+padding: 10px 0;
+font-size: 16px;
+color: #fff;
+margin-bottom: 30px;
+border: none;
+border-bottom: 1px solid #fff;
+outline: none;
+background: transparent;
+}
+.login-box .user-box label {
+position: absolute;
+top:0;
+left: 0;
+padding: 10px 0;
+font-size: 16px;
+color: #fff;
+pointer-events: none;
+transition: .5s;
+}
+
+.login-box .user-box input:focus ~ label,
+.login-box .user-box input:valid ~ label {
+top: -20px;
+left: 0;
+color: #03e9f4;
+font-size: 12px;
+}
+
+.login-box form a {
+position: relative;
+display: inline-block;
+padding: 10px 20px;
+color: #03e9f4;
+font-size: 16px;
+text-decoration: none;
+text-transform: uppercase;
+overflow: hidden;
+transition: .5s;
+margin-top: 40px;
+letter-spacing: 4px
+}
+
+.login-box a:hover {
+background: #03e9f4;
+color: #fff;
+border-radius: 5px;
+box-shadow: 0 0 5px #03e9f4,
+          0 0 25px #03e9f4,
+          0 0 50px #03e9f4,
+          0 0 100px #03e9f4;
+}
+
+.login-box a span {
+position: absolute;
+display: block;
+}
+
+.login-box a span:nth-child(1) {
+top: 0;
+left: -100%;
+width: 100%;
+height: 2px;
+background: linear-gradient(90deg, transparent, #03e9f4);
+animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+0% {
+left: -100%;
+}
+50%,100% {
+left: 100%;
+}
+}
+
+.login-box a span:nth-child(2) {
+top: -100%;
+right: 0;
+width: 2px;
+height: 100%;
+background: linear-gradient(180deg, transparent, #03e9f4);
+animation: btn-anim2 1s linear infinite;
+animation-delay: .25s
+}
+
+@keyframes btn-anim2 {
+0% {
+top: -100%;
+}
+50%,100% {
+top: 100%;
+}
+}
+
+.login-box a span:nth-child(3) {
+bottom: 0;
+right: -100%;
+width: 100%;
+height: 2px;
+background: linear-gradient(270deg, transparent, #03e9f4);
+animation: btn-anim3 1s linear infinite;
+animation-delay: .5s
+}
+
+@keyframes btn-anim3 {
+0% {
+right: -100%;
+}
+50%,100% {
+right: 100%;
+}
+}
+
+.login-box a span:nth-child(4) {
+bottom: -100%;
+left: 0;
+width: 2px;
+height: 100%;
+background: linear-gradient(360deg, transparent, #03e9f4);
+animation: btn-anim4 1s linear infinite;
+animation-delay: .75s
+}
+
+@keyframes btn-anim4 {
+0% {
+bottom: -100%;
+}
+50%,100% {
+bottom: 100%;
+}
+}
+
+
+
+/* -- YouTube Link Styles -- */
+
+#source-link {
+top: 60px;
+}
+
+#source-link > i {
+color: rgb(94, 106, 210);
+}
+
+#yt-link {  
+top: 10px;
+}
+
+#yt-link > i {
+color: rgb(219, 31, 106); 
+
+}
+
+.meta-link {
+align-items: center;
+backdrop-filter: blur(3px);
+background-color: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 6px;
+box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+cursor: pointer;  
+display: inline-flex;
+gap: 5px;
+left: 10px;
+padding: 10px 20px;
+position: fixed;
+text-decoration: none;
+transition: background-color 600ms, border-color 600ms;
+z-index: 10000;
+}
+
+.meta-link:hover {
+background-color: rgba(255, 255, 255, 0.1);
+border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.meta-link > i, .meta-link > span {
+height: 20px;
+line-height: 20px;
+}
+
+.meta-link > span {
+color: white;
+font-family: "Rubik", sans-serif;
+transition: color 600ms;
+}
+nav {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+background-color: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(3px);
+padding: 15px;
+letter-spacing: 1px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+nav a {
+text-decoration: none;
+color: white;
+padding: 10px;
+margin: 0 10px;
+font-size: 20px;
+transition: color 600ms;
+}
+nav a:hover {
+color: lightgreen;
 }

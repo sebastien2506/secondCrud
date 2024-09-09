@@ -12,8 +12,7 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}<div class="container">
-    <h1>{{ titre }}</h1>
-</div>{% endblock %}
+        {% block navbar %}{% include 'menu.html.twig' %}{% endblock %}
+        {% block body %}<div class="container"></div>{% endblock %}
     </body>
 </html>
