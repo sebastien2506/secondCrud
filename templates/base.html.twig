@@ -12,7 +12,9 @@
         {% endblock %}
     </head>
     <body>
+    <div class="container"class="container container-fluid bg-dark text-white p-5 mb-5 rounded shadow-lg border border-white">
         {% block navbar %}{% include 'menu.html.twig' %}{% endblock %}
         {% block body %}<div class="container"></div>{% endblock %}
+        </div>
     </body>
 </html>

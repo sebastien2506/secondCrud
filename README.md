@@ -340,3 +340,74 @@ Attention cette étape pourrait effacer des données (en dev uniquement)
  Next: Check your new CRUD by going to /admin/article/crud/
 
 ```
+
+### Création des liens dans un menu
+
+On va mettre ce menu dans `templates/base.html.twig` car tous les fichiers par défaut héritent de celui-ci :
+
+```twig
+{# templates/base.html.twig #}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        {% block stylesheets %}
+        {% endblock %}
+
+        {% block javascripts %}
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+        {% endblock %}
+    </head>
+    <body>
+        {# création du block pour la bare de navigation,
+        qui n'est pas dans le block body, lui-même effacé
+        par tous les fichiers twigs auto-générés #}
+        {% block navbar %}
+            {% include 'menu.html.twig' %}
+        {% endblock %}
+        {% block body %}{% endblock %}
+    </body>
+</html>
+
+```
+
+Puis le menu
+
+```twig
+{# templates/menu.html.twig #}
+<nav>
+    <a href="{{ path('homepage') }}">Accueil</a>
+    <a href="{{ path('app_admin_article_crud_index') }}">Crud des articles</a>
+</nav>
+```
+
+### Design des formulaires
+
+Il existe des designs pré-établis dans Symfony :
+
+https://symfony.com/doc/current/form/form_themes.html#symfony-builtin-forms
+
+Si on veut en utiliser un principal, on va ouvrir le fichier
+
+    config/packages/twig.yaml
+
+Et rajouter
+
+```twig
+twig:
+    file_name_pattern: '*.twig'
+    # pour les formulaires par défaut
+    form_themes: ['bootstrap_5_layout.html.twig']
+
+when@test:
+    twig:
+        strict_variables: true
+
+```
+
+Notre formulaire est généré avec de l'html maintenant compatible avec Bootstrap !
+
+Nous allons ajouter bootstrap avec `AssetMapper`
+Réduire
